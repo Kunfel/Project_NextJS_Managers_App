@@ -23,8 +23,8 @@ import "easymde/dist/easymde.min.css";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
-import { createChallenge, updateChallenge, getChallenge } from "../challenges/actions";
-import { Level, Language, TestCase } from "../challenges/type";
+import { createChallenge, updateChallenge, getChallenge } from "../actions";
+import { Level, Language, TestCase } from "../type";
 
 export default function ChallengePage() {
   const router = useRouter();
@@ -115,7 +115,7 @@ export default function ChallengePage() {
         tests: testCases,
       };
 
-      const response = isEditMode 
+      const response = isEditMode
         ? await updateChallenge(challengeId, challengeData)
         : await createChallenge(challengeData);
 
@@ -140,7 +140,7 @@ export default function ChallengePage() {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">{isEditMode ? 'Edit' : 'Create New'} Challenge</h1>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Side */}
           <div className="space-y-6">
@@ -248,7 +248,7 @@ export default function ChallengePage() {
                         <Trash2 className="w-4 w-4" />
                       </Button>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4">
                       <Select
                         value={testCase.type}

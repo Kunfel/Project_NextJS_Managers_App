@@ -25,3 +25,23 @@ export interface Challenge {
   tests: TestCase[];
   createdAt: string;
 }
+
+export interface SignupRequest {
+  name: string;
+  name2: string;
+  email: string;
+  password: string;
+}
+
+export interface SignupResponse {
+  message: string;
+}
+
+export interface SigninRequest {
+  email: string;
+  password: string;
+}
+
+export interface SigninResponse {
+  token: string;
+}

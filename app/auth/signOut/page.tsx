@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import axios from "axios";
+import Router from "next/router";
+
 
 const formSchema = z.object({
   name: z.string().min(2, "String must contain at least 2 characters"),
@@ -35,6 +38,17 @@ export default function SignIn() {
       password: "",
     },
   });
+
+  const handleSignup = async (formData: { email: string; password: string }) => {
+    try {
+      const response = await axios.post(process.env.BACKEND_Express_URL + '/signup', formData);
+      if (response.status === 200) {
+        Router.push('/signin');
+      }
+    } catch (error: any) {
+      console.error('Signup error:', error.response?.data?.message || 'Something went wrong');
+    }
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);

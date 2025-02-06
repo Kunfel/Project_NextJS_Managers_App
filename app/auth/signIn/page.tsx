@@ -17,6 +17,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import axios from "axios";
+import Router from "next/router";
+import { useDispatch } from "react-redux";
+import { setAuthToken } from "@/app/redux/features/authSlice";
 
 const formSchema = z.object({
   email: z.string().email("Email is required"),
@@ -24,6 +28,7 @@ const formSchema = z.object({
 });
 
 export default function SignIn() {
+  const dispatch = useDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,6 +36,20 @@ export default function SignIn() {
       password: "",
     },
   });
+
+  const handleSignin = async (formData: { email: string; password: string }) => {
+    try {
+      const response = await axios.post(process.env.BACKEND_Express_URL + '/signin', formData);
+      if (response.status === 200) {
+        // Store token in Redux and cookies
+        dispatch(setAuthToken(response.data.token));
+        document.cookie = `token=${response.data.token}; path=/`;
+        Router.push('/');
+      }
+    } catch (error: any) {
+      console.error('Signin error:', error.response?.data?.message || 'Something went wrong');
+    }
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
